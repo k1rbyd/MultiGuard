@@ -16,22 +16,22 @@ if not api_key:
 genai.configure(api_key=api_key)
 
 def verify_claim_with_gemini(claim: str):
-    """
-    Uses Gemini 2.0 Flash-Lite to assess whether a claim is true or misinformation.
-    Returns a dictionary with input_text, verdict, confidence, explanation.
-    """
     try:
         model = genai.GenerativeModel("gemini-2.0-flash-lite")
         prompt = f"""
-        You are an expert fact-checking assistant.
-        Analyze the following claim and respond strictly in JSON format like:
-        {{
-            "verdict": "True" | "False" | "Uncertain",
-            "confidence": number (0-1),
-            "explanation": "short reasoning"
-        }}
+        You are an expert fact-checking assistant. Analyze the following claim and determine:
+        1. Whether it is True, False, or Unverifiable.
+        2. Provide a confidence score between 0.0 and 1.0 based on how certain you are.
+        3. Give a clear, structured explanation with factual context and supporting evidence.
 
         Claim: "{claim}"
+
+        Respond strictly in this JSON format:
+        {{
+        "verdict": "True" | "False" | "Unverifiable",
+        "confidence": float,
+        "explanation": "Detailed reasoning that includes context, factual evidence, and justification for the verdict."
+        }}
         """
 
         # Generate response from Gemini
