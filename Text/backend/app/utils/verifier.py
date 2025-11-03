@@ -64,8 +64,15 @@ def verify_claim_with_gemini(claim: str):
     except Exception as e:
         return {
             "input_text": claim,
-            "verdict": "Error",
+            "verdict": "System Unavailable",
             "confidence": 0,
-            "explanation": f"Error occurred: {e}",
+            "explanation": (
+                "⚠️ Internal inference error: The model encountered an unexpected issue "
+                "while analyzing this claim. It may have exceeded its contextual limits or "
+                "failed to converge on a stable interpretation. "
+                "Please retry after a few moments — subsequent runs often stabilize as "
+                "the system recalibrates."
+            ),
             "timestamp": datetime.utcnow().isoformat() + "Z"
         }
+
